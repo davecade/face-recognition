@@ -1,1 +1,1 @@
-# Image face recoognition app
+# Image face recognition app
