@@ -31,24 +31,6 @@ const App = () => {
   const [ imageUrl, setImageUrl ] = useState('')
   const [ box, setBox ] = useState({})
 
-  const calculateFaceLocation = data => {
-
-    const imageData = {
-      leftCol: data.left_col,
-      topRow: data.top_row,
-      rightCol: data.right_col,
-      bottomRow: data.bottom_row
-    }
-
-    console.log("imageData", imageData)
-    return imageData
-  }
-
-  const displayFaceBox = box => {
-    console.log(box)
-    setBox(box)
-  }
-
   const onInputChange = event => {
     setInput(event.target.value)
   }
@@ -59,7 +41,7 @@ const App = () => {
     app.models.predict(Clarifai.FACE_DETECT_MODEL, input)
     .then( resp => {
       let boundingBox = resp.outputs[0].data.regions[0].region_info.bounding_box
-      displayFaceBox(calculateFaceLocation(boundingBox))
+      setBox(boundingBox)
     })
   }
 
