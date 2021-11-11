@@ -37,6 +37,21 @@ app.post('/signin', (req, res) => {
     }
 })
 
+app.get('/profile/:id', (req, res) => {
+    const { id } = req.params;
+    let found = false
+    database.users.forEach((user) => {
+        if(user.id===id) {
+            found = true
+            return res.json(user)
+        }
+    })
+
+    if(!found) {
+        res.status(404).json('no such user')
+    }
+})
+
 app.post('/register', (req, res) => {
     database.users.push({
         id: '125',
@@ -48,6 +63,21 @@ app.post('/register', (req, res) => {
     })
 
     res.json(database.users[database.users.length-1])
+})
+
+
+app.put('/image', (req, res) => {
+    database.users.forEach(user => {
+        if(req.body.id === user.id) {
+            found = true
+            user.entries++;
+            return res.json(user.entries)
+        }
+    })
+
+    if(!found) {
+        res.status(404).json('no such user')
+    }
 })
 
 app.listen(3000, () => {
