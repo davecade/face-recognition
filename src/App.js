@@ -63,6 +63,23 @@ const App = () => {
     setImageUrl(input)
     app.models.predict(Clarifai.FACE_DETECT_MODEL, input)
     .then( resp => {
+
+        if(resp) {
+          fetch('http://localhost:4000/image', {
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              id: user.id
+            })
+          }).then(resp => resp.json())
+          .then(count => {
+            setUser({
+              ...user,
+              entries: count
+            })
+          })
+        }
+
       let boundingBox = resp.outputs[0].data.regions[0].region_info.bounding_box
       setBox(boundingBox)
     })
