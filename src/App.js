@@ -34,6 +34,25 @@ const App = () => {
   const [ box, setBox ] = useState({})
   const [ route, setRoute ] = useState('signin')
   const [ isSignedIn, setIsSinedIn ] = useState(false)
+  const [ user, setUser ] = useState({
+    id: '',
+    name: '',
+    email: '',
+    password: '',
+    entries: 0,
+    joined: ''
+  })
+
+  const loadUser = (data) => {
+    setUser({
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      entries: data.entries,
+      joined: data.joined
+    })
+  }
+
 
   const onInputChange = event => {
     setInput(event.target.value)
@@ -69,15 +88,15 @@ const App = () => {
       {route === 'home' ? 
           <div>
             <Logo />
-            <Rank />
+            <Rank name={user.name} entries={user.entries} />
             <ImageLinkForm onInputChange={onInputChange} onButtonSubmit={onButtonSubmit} />
             <FaceRecognition imageUrl={imageUrl} box={box} />
           </div>
         : (
           route === 'signin' | route ==='signout' ?
-          <SignIn onRouteChange={onRouteChange} />
+          <SignIn onRouteChange={onRouteChange} loadUser={loadUser} />
           :
-          <Register onRouteChange={onRouteChange} />
+          <Register onRouteChange={onRouteChange} loadUser={loadUser} />
         )
       }
     </div>
